@@ -46,32 +46,32 @@ Our sales team spends over 15 hours per week researching prospective leads befor
 ```mermaid
 flowchart TD
     subgraph UI ["Web Interface (HTML5 / Tailwind CSS / SSE)"]
-        A1[Single Lead Input] --> B[FastAPI Application]
-        A2[Bulk Multi-Line Input] --> B
-        A3[CSV / Text Upload] --> B
-        A4[1-Click Assignment Leads] --> B
+        A1["Single Lead Input"] --> B["FastAPI Application"]
+        A2["Bulk Multi-Line Input"] --> B
+        A3["CSV / Text Upload"] --> B
+        A4["1-Click Assignment Leads"] --> B
     end
 
     subgraph Pipeline ["Research & Scrape Engine"]
-        B --> C[(SQLite Database: leads.db)]
-        B --> D[Background Pipeline Runner]
-        D -->|Step 1: Discover| E[Search Resolution (ddgs / DuckDuckGo)]
-        D -->|Step 2: Scrape & Crawl| F[Async HTTP Crawler (httpx + BeautifulSoup)]
-        F --> G[robots.txt Check & Candidate Page Selection]
-        G --> H[Boilerplate, Cookie & Template Stripper]
+        B --> C[("SQLite Database: leads.db")]
+        B --> D["Background Pipeline Runner"]
+        D -->|Step 1: Discover| E["Search Resolution (ddgs / DuckDuckGo)"]
+        D -->|Step 2: Scrape & Crawl| F["Async HTTP Crawler (httpx + BeautifulSoup)"]
+        F --> G["robots.txt Check & Candidate Page Selection"]
+        G --> H["Boilerplate, Cookie & Template Stripper"]
     end
 
     subgraph Intelligence ["AI Analysis & Grounding Layer"]
-        H --> I{LLM Provider Router}
-        I -->|Cloud LLM| J1[Google Gemini 2.5 Flash]
-        I -->|Cloud LLM| J2[OpenAI GPT-4o-mini]
-        I -->|Cloud LLM| J3[Groq Llama 3.3]
-        I -->|Offline / No Key| J4[Deterministic Semantic Heuristic Engine]
-        J1 --> K[Pydantic Schema Validation & JSON Repair]
+        H --> I{"LLM Provider Router"}
+        I -->|Cloud LLM| J1["Google Gemini 2.5 Flash"]
+        I -->|Cloud LLM| J2["OpenAI GPT-4o-mini"]
+        I -->|Cloud LLM| J3["Groq Llama 3.3"]
+        I -->|Offline / No Key| J4["Deterministic Semantic Heuristic Engine"]
+        J1 --> K["Pydantic Schema Validation & JSON Repair"]
         J2 --> K
         J3 --> K
         J4 --> K
-        K --> L[Verbatim Evidence Substring Grounding Check]
+        K --> L["Verbatim Evidence Substring Grounding Check"]
     end
 
     L -->|Step 3: Persist| C
