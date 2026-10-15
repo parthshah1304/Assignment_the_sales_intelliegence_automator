@@ -242,3 +242,60 @@ To ensure reliable, hallucination-free B2B qualification, the system uses strict
 - **Headless Browser Integration**: Adding a Playwright or Puppeteer worker pool to fully render complex Single Page Applications (SPAs) built with client-side React/Vue.
 - **Bi-Directional CRM Sync**: Building direct OAuth connectors and webhooks for HubSpot, Salesforce, and Apollo.io to push qualified leads and discovery briefs directly into sales rep workflows.
 - **Automated Outreach Generation**: Generating personalized, multi-touch cold email sequences and LinkedIn outreach messages based on the three synthesized discovery questions.
+
+---
+
+## AI / LLM Implementation Details (Assignment FAQ)
+
+### 1. Where the LLM is Used in the System
+The LLM is invoked at the core synthesis step of the pipeline in [`app/analyzer/llm_client.py`](file:///k:/assignment_tasl/app/analyzer/llm_client.py) after the multi-page crawler and boilerplate filter have produced a clean, consolidated text dossier. It performs three critical cognitive tasks:
+1. **Semantic Extraction**: Synthesizing the high-level Company Overview, Core Products/Services, and Target Customer Demographics.
+2. **Strict ICP Qualification**: Evaluating the company against the Ideal Customer Profile defined in [`icp.md`](file:///k:/assignment_tasl/icp.md) to render a binary **B2B Yes/No** decision, accompanied by an evidence-backed rationale and verbatim quotes.
+3. **Discovery Question Formulation**: Generating exactly three tailored, high-impact sales discovery questions that a sales executive can directly use on an introductory call.
+
+### 2. Why We Chose That Model & Endpoint (Local vs. Cloud)
+- **Primary Cloud Model**: **Google Gemini 2.5 Flash** (via the OpenAI-compatible endpoint or Google GenAI SDK).
+  - *Rationale*: Sub-second latency, generous free-tier quotas (15 RPM / 1M TPM), long context windows (over 1M tokens), and native support for deterministic JSON schema output.
+  - *Flexibility*: We also support **OpenAI GPT-4o-mini** and **Groq Llama 3.3 70B** through unified environment variables.
+- **Local / Offline Fallback Engine**:
+  - *Rationale*: To eliminate dependencies on paid API keys or network latency during evaluation, the prototype includes an intelligent rule-based semantic analyzer (`app/analyzer/mock_engine.py`). This guarantees the code can be evaluated immediately with zero configuration.
+
+### 3. Limitations of the AI Component
+- **Visibility Restricted to Crawled Text**: The LLM can only evaluate content that the scraper successfully extracts. If a website relies heavily on client-side JavaScript hydration or behind-login portals, the LLM receives less context and triggers the `needs_review` fallback flag.
+- **Rate Limits on Free Tiers**: Cloud providers (e.g. Gemini or OpenAI free tier) enforce RPM thresholds that require exponential backoff on large batch runs.
+- **Hallucination Risk**: Even with low temperature, LLMs may extrapolate commercial capabilities. We mitigate this through our **Verbatim Evidence Substring Grounding** check, which automatically overrides unsubstantiated "Yes" decisions.
+
+---
+
+## Technical Interview Walkthrough Guide
+
+The assignment notes that the interview will cover 5 key areas. Here is how our architecture addresses each:
+
+### 1. Problem Understanding
+* **Core Problem**: Sales reps spend 15+ hours/week manually browsing websites, reading "About" pages, determining ICP fit, and writing call questions.
+* **Our Approach**: We automated this research into a 4-stage pipeline: **Ingestion** (tolerant of raw text/URLs) ➔ **Discovery & Deep Crawl** (multi-page + robots check) ➔ **Noise Reduction** (cookie/nav/footer/template deduplication) ➔ **Strict Grounded Qualification** (ICP schema + verbatim evidence check + discovery questions).
+
+### 2. System Design & Implementation
+* **Scraping Strategy & Pagination**: Instead of blindly scraping links, `pick_links` ranks same-domain URLs using high-intent keywords (`/about`, `/services`, `/commercial`, `/solutions`). It avoids pagination loops and media files (`.pdf`, `.jpg`, `.zip`).
+* **Sponsored Listings & Directory Filtering**: The `search.py` module maintains a directory blocklist (`yelp.com`, `yellowpages.com`, `facebook.com`, `bbb.org`) and unrolls search redirects so we only crawl the company's authentic website.
+* **Platform & Layout Differences**: Rather than relying on fragile CSS selectors, we use semantic HTML fallback parsing: checking `<main>`, `<article>`, and `<h1>-<h3>` headings first, then falling back to stripped text, followed by cross-page line frequency deduplication to remove repeated site-wide templates.
+
+### 3. AI Evaluation Logic & Specification Validation
+* **Prompt Design**: System prompt embeds the exact rules from `icp.md` and enforces temperature `0.0`.
+* **Strict Schema Validation**: Pydantic models enforce exact types, strict `Yes`/`No` decisions, exactly 3 discovery questions ending in `?`, and verbatim evidence quotes.
+* **Evidence Substring Verification**: A custom grounding audit checks if quoted evidence exists literally in the crawled text. If an LLM hallucinates a quote, the quote is discarded and the decision is downgraded to "No".
+
+### 4. Code Review (GitHub Codespaces)
+* Clean separation of concerns:
+  - `app/scraper/`: Web discovery, crawler, and cleaner.
+  - `app/analyzer/`: LLM client, prompts, and offline semantic fallback.
+  - `app/database.py`: SQLite storage with automatic schema migrations.
+  - `app/main.py`: FastAPI endpoints and SSE event streaming.
+  - `app/static/`: Reactive single-page dashboard with zero build step.
+
+### 5. Live Modifications Readiness
+* **Adding a new LLM provider**: Simply add a route in `llm_client.py`.
+* **Modifying ICP criteria**: Edit `icp.md` directly without touching Python code.
+* **Adjusting crawl depth**: Tweak `MAX_CRAWL_PAGES_PER_LEAD` via UI settings or `.env`.
+* **Adding CRM webhooks**: Implement an outgoing `httpx.post` in `main.py:process_single_lead_pipeline`.
+
