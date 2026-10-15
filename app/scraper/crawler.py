@@ -204,14 +204,31 @@ async def crawl_lead_data(lead_input: str, max_pages: Optional[int] = None) -> D
             )
 
         if not chunks:
-            # Direct crawl returned no readable text (e.g. 403 or SPA)
-            data_quality_notes = f"Direct fetch returned HTTP {root_res.get('status') or 'error'}. Using search fallback."
-            validation_flags.append("Direct page content unavailable; used fallback search summary")
+            # Direct crawl returned no readable text (e.g. 403, timeout, or SPA)
+            domain_name = urllib.parse.urlparse(target_url).netloc.replace("www.", "")
+            fallback_query = f"{company_name} {domain_name}".strip()
+            fallback_snippet = snippet
+            if not fallback_snippet:
+                sec_discovery = resolve_lead_to_web(fallback_query)
+                fallback_snippet = sec_discovery.get("snippet", "")
+                if not fallback_snippet and sec_discovery.get("search_results"):
+                    fallback_snippet = "\n".join(r.get("body", "") for r in sec_discovery["search_results"] if r.get("body"))
+
+            data_quality_notes = f"Direct fetch returned {root_res.get('status') or 'Timeout/Error'}. Using search intelligence fallback."
+            validation_flags.append(f"Direct crawl restricted ({root_res.get('status') or 'Timeout'}); synthesized via search engine context")
+            
+            scraped_pages.append({
+                "url": target_url,
+                "title": discovery.get("title", company_name),
+                "status": root_res.get("status") or "restricted_or_timeout",
+                "char_count": len(fallback_snippet)
+            })
             chunks.append(
                 f"### TARGET: {target_url}\n"
-                f"Status: {root_res.get('status')}\n"
-                f"Search Snippet Intelligence:\n{snippet}\n"
+                f"Status: {root_res.get('status') or 'Connection Restricted'}\n"
+                f"Search Snippet Intelligence:\n{fallback_snippet}\n"
             )
+            snippet = fallback_snippet
 
     if snippet and snippet not in chunks[0]:
         chunks.append(f"### SEARCH DIRECTORY CONTEXT:\n{snippet}\n")

@@ -42,3 +42,20 @@ def test_export_endpoints():
     res_json = client.get("/api/leads/export/json")
     assert res_json.status_code == 200
     assert "application/json" in res_json.headers["content-type"]
+
+def test_crm_webhook():
+    res = client.post("/api/webhook/crm-lead", json={"input_raw": "Apex Facility Solutions"})
+    assert res.status_code == 202
+    data = res.json()
+    assert data["status"] == "accepted"
+    assert "lead_id" in data
+
+def test_direct_research():
+    res = client.post("/api/pipeline/direct-research", json={"input_raw": "Acme Industrial Services"})
+    assert res.status_code == 200
+    data = res.json()
+    assert "brief" in data
+    assert "b2b_decision" in data["brief"]
+    assert "sales_questions" in data["brief"]
+    assert len(data["brief"]["sales_questions"]) == 3
+

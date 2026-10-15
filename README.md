@@ -90,6 +90,7 @@ sales-intelligence-automator/
 │   ├── config.py                # Pydantic V2 configuration & env variables
 │   ├── database.py              # SQLite storage, CRUD, schema migrations
 │   ├── models.py                # Pydantic schemas (SalesBrief, LeadResponse)
+│   ├── pipeline.py              # Decoupled pure research pipeline function
 │   ├── main.py                  # FastAPI application, background pipeline & SSE
 │   ├── scraper/
 │   │   ├── cleaner.py           # Cookie banner, nav, footer, noise stripper
@@ -109,7 +110,7 @@ sales-intelligence-automator/
 ├── scripts/
 │   └── process_assignment_leads.py # Batch runner for processing test leads
 ├── tests/
-│   ├── test_api.py              # API endpoint and export tests
+│   ├── test_api.py              # API endpoint, CRM webhook, and export tests
 │   ├── test_cleaner.py          # HTML noise reduction tests
 │   ├── test_grounding.py        # Verbatim evidence grounding & override tests
 │   ├── test_mock_engine.py      # B2B qualification and question logic tests
@@ -208,8 +209,10 @@ Run unit and integration tests using `pytest`:
 pytest -v
 ```
 
-All **14 test cases** pass with zero warnings, validating:
+All **16 test cases** pass with zero warnings, validating:
 - API endpoints (`/api/health`, `/api/leads`, `/api/stats`, `/api/leads/export/csv`)
+- CRM Webhook ingestion (`POST /api/webhook/crm-lead`)
+- Pure microservice pipeline execution (`POST /api/pipeline/direct-research`)
 - HTML boilerplate and cookie banner stripping
 - Verbatim evidence substring grounding & automatic override on hallucinated quotes
 - Search query normalization and variation generation

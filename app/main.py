@@ -32,8 +32,7 @@ from app.database import (
     get_setting,
     set_setting
 )
-from app.scraper.crawler import crawl_lead_data
-from app.analyzer.llm_client import analyze_lead
+from app.pipeline import research_lead
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("sales_intelligence")
@@ -78,7 +77,7 @@ async def broadcast_lead_update(lead_id: int, status: str, company_name: Optiona
 
 async def process_single_lead_pipeline(lead_id: int, input_raw: str):
     """
-    Executes the full pipeline for a lead:
+    Executes the full pipeline for a lead via the decoupled research_lead engine:
     1. Status: scraping -> crawls root & subpages with boilerplate filtering
     2. Status: analyzing -> sends dossier to LLM
     3. Status: completed -> stores structured brief
@@ -88,46 +87,40 @@ async def process_single_lead_pipeline(lead_id: int, input_raw: str):
         update_lead_status(lead_id, "scraping")
         await broadcast_lead_update(lead_id, "scraping")
 
-        # Step 1: Web discovery & multi-page crawl
-        crawl_result = await crawl_lead_data(input_raw)
-        company_name = crawl_result.get("company_name", input_raw)
-        website = crawl_result.get("website")
-        scraped_pages = crawl_result.get("scraped_pages", [])
-        combined_text = crawl_result.get("combined_text", "")
+        async def progress_callback(stage: str):
+            update_lead_status(lead_id, stage)
+            await broadcast_lead_update(lead_id, stage)
 
-        # Step 2: AI / LLM Analysis
-        update_lead_status(lead_id, "analyzing")
-        await broadcast_lead_update(lead_id, "analyzing", company_name)
-
-        brief = await analyze_lead(company_name, website, combined_text)
-
-        crawler_flags = crawl_result.get("validation_flags", [])
-        combined_flags = list(brief.validation_flags) + [f for f in crawler_flags if f not in brief.validation_flags]
-        needs_review = brief.needs_review or bool(crawler_flags) or brief.confidence == "low"
-        notes = brief.data_quality_notes or crawl_result.get("data_quality_notes", "")
+        max_crawl_pages = int(get_setting("max_crawl_pages", str(settings.MAX_CRAWL_PAGES_PER_LEAD)))
+        result = await research_lead(input_raw, max_crawl_pages=max_crawl_pages, on_progress=progress_callback)
+        
+        brief = result["brief"]
+        company_name = result["company_name"]
+        website = result["website"]
+        scraped_pages = result["scraped_pages"]
 
         # Step 3: Persist structured brief in DB
         update_lead_brief(
             lead_id=lead_id,
-            company_name=brief.company_name or company_name,
-            website=brief.website or website,
-            company_overview=brief.company_overview,
-            core_products_services=brief.core_products_services,
-            target_customer=brief.target_customer,
-            b2b_decision=brief.b2b_decision,
-            b2b_confidence=brief.b2b_confidence,
-            b2b_reasoning=brief.b2b_reasoning,
-            sales_questions=brief.sales_questions,
-            key_signals=brief.key_signals,
+            company_name=company_name,
+            website=website,
+            company_overview=brief.get("company_overview"),
+            core_products_services=brief.get("core_products_services"),
+            target_customer=brief.get("target_customer"),
+            b2b_decision=brief.get("b2b_decision"),
+            b2b_confidence=brief.get("b2b_confidence"),
+            b2b_reasoning=brief.get("b2b_reasoning"),
+            sales_questions=brief.get("sales_questions"),
+            key_signals=brief.get("key_signals"),
             scraped_pages=scraped_pages,
-            confidence=brief.confidence,
-            evidence=brief.evidence,
-            needs_review=needs_review,
-            data_quality_notes=notes,
-            validation_flags=combined_flags
+            confidence=brief.get("confidence"),
+            evidence=brief.get("evidence"),
+            needs_review=brief.get("needs_review", False),
+            data_quality_notes=brief.get("data_quality_notes", ""),
+            validation_flags=brief.get("validation_flags", [])
         )
 
-        logger.info(f"Successfully completed analysis for Lead #{lead_id} ({company_name}) - B2B: {brief.b2b_decision}")
+        logger.info(f"Successfully completed analysis for Lead #{lead_id} ({company_name}) - B2B: {brief.get('b2b_decision')}")
         await broadcast_lead_update(lead_id, "completed", company_name)
 
     except Exception as e:
@@ -138,6 +131,34 @@ async def process_single_lead_pipeline(lead_id: int, input_raw: str):
 @app.get("/api/health")
 def health_check():
     return {"status": "ok", "app": settings.APP_NAME, "version": settings.APP_VERSION}
+
+@app.post("/api/webhook/crm-lead", status_code=202)
+def crm_lead_webhook(payload: LeadCreate, background_tasks: BackgroundTasks):
+    """
+    Webhook endpoint for CRM integrations (e.g., Salesforce, HubSpot, Zapier).
+    Accepts raw lead information asynchronously and executes the intelligence pipeline.
+    """
+    lead_id = create_lead(payload.input_raw)
+    background_tasks.add_task(process_single_lead_pipeline, lead_id, payload.input_raw)
+    return {
+        "status": "accepted",
+        "lead_id": lead_id,
+        "input_raw": payload.input_raw,
+        "message": "Lead ingested successfully from CRM webhook. Research pipeline running in background."
+    }
+
+@app.post("/api/pipeline/direct-research")
+async def direct_research_endpoint(payload: LeadCreate):
+    """
+    Direct synchronous endpoint for external microservices or CRM functions
+    that request an immediate structured dossier without saving to database.
+    """
+    try:
+        max_crawl_pages = int(get_setting("max_crawl_pages", str(settings.MAX_CRAWL_PAGES_PER_LEAD)))
+        result = await research_lead(payload.input_raw, max_crawl_pages=max_crawl_pages)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/stats")
 def get_dashboard_stats():
