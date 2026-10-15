@@ -63,14 +63,26 @@ def init_db():
     conn.commit()
     conn.close()
 
-def create_lead(input_raw: str) -> int:
+def create_lead(input_raw: str, deduplicate: bool = True) -> int:
     now = datetime.now(timezone.utc).isoformat()
+    cleaned = input_raw.strip()
     conn = get_connection()
     cursor = conn.cursor()
+    
+    if deduplicate:
+        cursor.execute("SELECT id FROM leads WHERE LOWER(TRIM(input_raw)) = LOWER(TRIM(?)) ORDER BY id DESC LIMIT 1", (cleaned,))
+        existing = cursor.fetchone()
+        if existing:
+            lead_id = existing["id"]
+            cursor.execute("UPDATE leads SET status = 'pending', updated_at = ? WHERE id = ?", (now, lead_id))
+            conn.commit()
+            conn.close()
+            return lead_id
+
     cursor.execute("""
         INSERT INTO leads (input_raw, status, created_at, updated_at)
         VALUES (?, 'pending', ?, ?)
-    """, (input_raw.strip(), now, now))
+    """, (cleaned, now, now))
     lead_id = cursor.lastrowid
     conn.commit()
     conn.close()
