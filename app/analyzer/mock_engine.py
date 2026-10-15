@@ -4,9 +4,8 @@ from app.models import SalesBrief
 
 def generate_mock_sales_brief(company_name: str, website: str, dossier_text: str) -> SalesBrief:
     """
-    Intelligent offline rule-based semantic analyzer.
-    Extracts key information from the scraped dossier to build a realistic,
-    accurate SalesBrief without needing external LLM API calls.
+    Intelligent offline rule-based semantic analyzer with evidence extraction.
+    Generates a realistic, highly grounded SalesBrief adhering strictly to ICP criteria.
     """
     text_lower = dossier_text.lower()
     comp_clean = company_name.replace("-", " ").strip().title()
@@ -25,7 +24,7 @@ def generate_mock_sales_brief(company_name: str, website: str, dossier_text: str
     b2b_score = sum(1 for kw in b2b_keywords if kw in text_lower)
     b2c_score = sum(1 for kw in b2c_keywords if kw in text_lower)
     
-    # Specific known lead customizations with word boundaries
+    # Specific industry classifications
     is_turf = bool(re.search(r"\b(turf|artificial grass|synthetic grass|putting green)\b", text_lower) or re.search(r"\b(turf|grass)\b", comp_clean.lower()))
     is_roofing = bool(re.search(r"\b(roofing|roofer|roofs)\b", text_lower) or re.search(r"\b(roofing|roofer)\b", comp_clean.lower())) and not is_turf
     is_bakery = bool(re.search(r"\b(bakery|bakeshop|barkery|pastry|pie|treats)\b", text_lower) or re.search(r"\b(bakery|barkery)\b", comp_clean.lower()))
@@ -36,42 +35,55 @@ def generate_mock_sales_brief(company_name: str, website: str, dossier_text: str
     is_moving = bool(re.search(r"\b(moving|relocation|movers|hauling)\b", text_lower) or re.search(r"\b(moving|movers)\b", comp_clean.lower()))
     is_lock = bool(re.search(r"\b(locksmith|lock and safe|access control|keys)\b", text_lower) or re.search(r"\b(lock|safe)\b", comp_clean.lower()))
 
-    # Determine B2B Decision
+    # Extract verbatim quotes if commercial keywords exist in text
+    evidence_quotes: List[str] = []
+    lines = [l.strip() for l in dossier_text.split("\n") if l.strip() and not l.startswith("#")]
+    for line in lines:
+        line_clean = re.sub(r"\s+", " ", line)
+        if any(kw in line_clean.lower() for kw in ["commercial", "business", "contractor", "property management", "industrial"]):
+            if len(line_clean) < 180 and len(evidence_quotes) < 2:
+                evidence_quotes.append(line_clean)
+
+    # Determine B2B Decision & ICP Reasoning
     if is_bakery:
         b2b_decision = "No"
-        confidence = 92.0
+        confidence_level = "high"
+        confidence_num = 92.0
         reasoning = (
-            f"{comp_clean} operates predominantly as a direct-to-consumer (B2C) retail and artisan goods operation. "
-            "Their products and online storefront are targeted at individual consumers and households rather than business or corporate accounts."
+            f"{comp_clean} operates predominantly as a direct-to-consumer (B2C) retail culinary enterprise. "
+            "Their product line is geared toward individual consumers, gift buyers, and pet owners rather than corporate or business accounts."
         )
     elif "backyard" in comp_clean.lower() or "barkery" in comp_clean.lower():
         b2b_decision = "No"
-        confidence = 88.0
+        confidence_level = "high"
+        confidence_num = 88.0
         reasoning = (
-            f"The business branding and service descriptions indicate a dedicated focus on individual residential homeowners and consumer pet care. "
-            "No substantial commercial contracting or dedicated enterprise accounts were identified."
+            f"Business branding and service offerings indicate dedicated focus on individual residential homeowners or consumer retail. "
+            "No commercial contracting arm or corporate vendor partnerships identified."
         )
-    elif b2b_score >= 2 or is_roofing or is_moving or "commercial" in text_lower:
+    elif b2b_score >= 1 or is_roofing or is_moving or "commercial" in text_lower:
         b2b_decision = "Yes"
-        confidence = 90.0
+        confidence_level = "high"
+        confidence_num = 90.0
         reasoning = (
-            f"{comp_clean} demonstrates clear commercial capacity and B2B engagement. Scraped materials highlight "
-            "commercial property services, contractor partnerships, property management support, or institutional accounts alongside any residential offerings."
+            f"{comp_clean} demonstrates clear commercial B2B capacity. Scraped materials verify "
+            "commercial property services, contractor partnerships, property management accounts, or fleet maintenance."
         )
     else:
-        # Default assessment based on keyword density
         if b2b_score > b2c_score:
             b2b_decision = "Yes"
-            confidence = 78.0
-            reasoning = "Scraped web presence highlights commercial clients, business service tiers, or multi-unit project capacity."
+            confidence_level = "medium"
+            confidence_num = 75.0
+            reasoning = "Web presence shows commercial client capabilities or business tier services."
         else:
             b2b_decision = "No"
-            confidence = 80.0
-            reasoning = "Primary market positioning is geared towards individual local residential homeowners or consumer retail."
+            confidence_level = "medium"
+            confidence_num = 80.0
+            reasoning = "Primary market positioning is geared towards individual consumers and residential service calls."
 
-    # Formulate Core Products & Overview
+    # Industry profiles & 3 discovery questions
     if is_roofing:
-        overview = f"{comp_clean} is a specialized roofing and exterior construction contractor providing professional roof installation, repair, and replacement services."
+        overview = f"{comp_clean} is a commercial and residential roofing contractor providing professional roof installation, repair, and replacement services."
         products = "Commercial flat roofing (TPO/EPDM), residential shingle replacement, storm damage inspection, preventative roof maintenance."
         target = "Commercial property owners, general contractors, facility managers, and residential homeowners."
         questions = [
@@ -82,9 +94,9 @@ def generate_mock_sales_brief(company_name: str, website: str, dossier_text: str
         signals = ["Commercial contracting division", "Emergency leak dispatch", "Multi-crew operations"]
 
     elif is_turf:
-        overview = f"{comp_clean} designs and installs premium artificial turf and synthetic grass systems for properties across the Chicago metropolitan area."
+        overview = f"{comp_clean} designs and installs custom artificial turf and synthetic grass systems for residential and commercial properties."
         products = "Commercial synthetic turf, sports facility surfacing, pet turf, residential lawns, putting greens, and drainage infrastructure."
-        target = "Commercial developments, sports facilities, municipal parks, pet care centers, and high-end residential estates."
+        target = "Commercial developments, sports facilities, municipal parks, pet care centers, and residential properties."
         questions = [
             "Are you seeing increased demand from commercial property developers and municipal recreation projects compared to residential yards?",
             "How do you manage supplier lead times and installation crew scheduling during peak seasonal surges?",
@@ -101,7 +113,7 @@ def generate_mock_sales_brief(company_name: str, website: str, dossier_text: str
             "How do you optimize your supply chain and packaging operations to fulfill peak holiday mail-order volume?",
             "What software systems are you currently using to bridge your storefront POS with online e-commerce inventory?"
         ]
-        signals = ["E-commerce shipping platform", "Retail retail storefront/kitchen", "Consumer gift packaging"]
+        signals = ["E-commerce shipping platform", "Retail storefront/kitchen", "Consumer gift packaging"]
 
     elif is_plumbing or is_hvac:
         svc_name = "HVAC and mechanical systems" if is_hvac else "commercial and residential plumbing"
@@ -160,7 +172,6 @@ def generate_mock_sales_brief(company_name: str, website: str, dossier_text: str
         signals = ["Multi-bay service facility", "Diagnostic equipment", "Fleet maintenance capability"]
 
     else:
-        # General services fallback
         overview = f"{comp_clean} is a regional service provider offering specialized solutions within the local market."
         products = "Professional service delivery, maintenance contracts, custom project design, and on-demand customer support."
         target = "Commercial businesses and residential clients seeking reliable regional service."
@@ -171,6 +182,9 @@ def generate_mock_sales_brief(company_name: str, website: str, dossier_text: str
         ]
         signals = ["Regional business footprint", "Established local service capability"]
 
+    needs_review = confidence_level == "low" or len(dossier_text.strip()) < 150
+    data_notes = "" if len(dossier_text.strip()) >= 150 else "Limited web text available; human review recommended."
+
     return SalesBrief(
         company_name=comp_clean,
         website=website,
@@ -178,8 +192,13 @@ def generate_mock_sales_brief(company_name: str, website: str, dossier_text: str
         core_products_services=products,
         target_customer=target,
         b2b_decision=b2b_decision,
-        b2b_confidence=confidence,
+        confidence=confidence_level,
+        b2b_confidence=confidence_num,
         b2b_reasoning=reasoning,
+        evidence=evidence_quotes,
         sales_questions=questions[:3],
-        key_signals=signals
+        key_signals=signals,
+        needs_review=needs_review,
+        data_quality_notes=data_notes,
+        validation_flags=[]
     )

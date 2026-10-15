@@ -1,6 +1,6 @@
 [
   {
-    "id": 18,
+    "id": 34,
     "input_raw": "https://www.houstonroofingonline.com",
     "company_name": "Houstonroofingonline",
     "website": "https://www.houstonroofingonline.com",
@@ -11,7 +11,7 @@
     "target_customer": "Commercial businesses and residential clients seeking reliable regional service.",
     "b2b_decision": "No",
     "b2b_confidence": 80.0,
-    "b2b_reasoning": "Primary market positioning is geared towards individual local residential homeowners or consumer retail.",
+    "b2b_reasoning": "Primary market positioning is geared towards individual consumers and residential service calls.",
     "sales_questions": [
       "What is your current mix between recurring commercial contract accounts and one-off project engagements?",
       "What is the single biggest operational bottleneck restricting your capacity to take on larger contracts this quarter?",
@@ -21,30 +21,30 @@
       "Regional business footprint",
       "Established local service capability"
     ],
-    "scraped_pages": [
-      {
-        "url": "https://www.houstonroofingonline.com",
-        "title": "Houstonroofingonline",
-        "status": "HTTP 403",
-        "char_count": 0
-      }
-    ],
-    "created_at": "2026-10-15T16:48:31.635451+00:00",
-    "updated_at": "2026-10-15T16:48:33.387839+00:00"
+    "scraped_pages": [],
+    "created_at": "2026-10-15T17:01:35.825749+00:00",
+    "updated_at": "2026-10-15T17:01:37.598584+00:00",
+    "confidence": "medium",
+    "evidence": [],
+    "needs_review": true,
+    "data_quality_notes": "Limited web text available; human review recommended.",
+    "validation_flags": [
+      "Direct page content unavailable; used fallback search summary"
+    ]
   },
   {
-    "id": 19,
+    "id": 35,
     "input_raw": "BrightPlay Turf – Artificial Turf & Landscaping, Chicago IL",
     "company_name": "Brightplay Turf",
     "website": "https://brightplayturf.com/about/",
     "status": "completed",
     "error_message": null,
-    "company_overview": "Brightplay Turf designs and installs premium artificial turf and synthetic grass systems for properties across the Chicago metropolitan area.",
+    "company_overview": "Brightplay Turf designs and installs custom artificial turf and synthetic grass systems for residential and commercial properties.",
     "core_products_services": "Commercial synthetic turf, sports facility surfacing, pet turf, residential lawns, putting greens, and drainage infrastructure.",
-    "target_customer": "Commercial developments, sports facilities, municipal parks, pet care centers, and high-end residential estates.",
+    "target_customer": "Commercial developments, sports facilities, municipal parks, pet care centers, and residential properties.",
     "b2b_decision": "Yes",
     "b2b_confidence": 90.0,
-    "b2b_reasoning": "Brightplay Turf demonstrates clear commercial capacity and B2B engagement. Scraped materials highlight commercial property services, contractor partnerships, property management support, or institutional accounts alongside any residential offerings.",
+    "b2b_reasoning": "Brightplay Turf demonstrates clear commercial B2B capacity. Scraped materials verify commercial property services, contractor partnerships, property management accounts, or fleet maintenance.",
     "sales_questions": [
       "Are you seeing increased demand from commercial property developers and municipal recreation projects compared to residential yards?",
       "How do you manage supplier lead times and installation crew scheduling during peak seasonal surges?",
@@ -60,76 +60,45 @@
         "url": "https://brightplayturf.com/about/",
         "title": "About Us | BrightPlay Turf",
         "status": "success",
-        "char_count": 1263
-      },
-      {
-        "url": "https://brightplayturf.com/residential-turf-installation/",
-        "title": "Residential Artificial Turf Installation | BrightPlay Turf",
-        "status": "success",
-        "char_count": 2544
+        "char_count": 1248
       },
       {
         "url": "https://brightplayturf.com/commercial-turf-installation/",
         "title": "Commercial Artificial Turf Installation | BrightPlay Turf",
         "status": "success",
-        "char_count": 2638
+        "char_count": 2498
+      },
+      {
+        "url": "https://brightplayturf.com/residential-turf-installation/",
+        "title": "Residential Artificial Turf Installation | BrightPlay Turf",
+        "status": "success",
+        "char_count": 2404
       }
     ],
-    "created_at": "2026-10-15T16:48:33.391120+00:00",
-    "updated_at": "2026-10-15T16:48:37.597543+00:00"
+    "created_at": "2026-10-15T17:01:37.606038+00:00",
+    "updated_at": "2026-10-15T17:01:49.116352+00:00",
+    "confidence": "high",
+    "evidence": [
+      "Meta Description: Learn about BrightPlay Turf, a trusted provider of custom artificial turf solutions for homes and businesses across the Chicago area.",
+      "Title: Commercial Artificial Turf Installation | BrightPlay Turf"
+    ],
+    "needs_review": false,
+    "data_quality_notes": "",
+    "validation_flags": []
   },
   {
-    "id": 20,
+    "id": 36,
     "input_raw": "https://www.springhilllandscaping.com",
     "company_name": "Springhilllandscaping",
     "website": "https://www.springhilllandscaping.com",
     "status": "completed",
     "error_message": null,
-    "company_overview": "Springhilllandscaping is a regional service provider offering specialized solutions within the local market.",
-    "core_products_services": "Professional service delivery, maintenance contracts, custom project design, and on-demand customer support.",
-    "target_customer": "Commercial businesses and residential clients seeking reliable regional service.",
-    "b2b_decision": "Yes",
-    "b2b_confidence": 90.0,
-    "b2b_reasoning": "Springhilllandscaping demonstrates clear commercial capacity and B2B engagement. Scraped materials highlight commercial property services, contractor partnerships, property management support, or institutional accounts alongside any residential offerings.",
-    "sales_questions": [
-      "What is your current mix between recurring commercial contract accounts and one-off project engagements?",
-      "What is the single biggest operational bottleneck restricting your capacity to take on larger contracts this quarter?",
-      "How do your sales or business development reps currently identify and qualify inbound opportunities?"
-    ],
-    "key_signals": [
-      "Regional business footprint",
-      "Established local service capability"
-    ],
-    "scraped_pages": [
-      {
-        "url": "https://www.springhilllandscaping.com",
-        "title": "Home - King of the Hill",
-        "status": "success",
-        "char_count": 2851
-      },
-      {
-        "url": "http://springhilllandscaping.com/index.php/king-of-the-hill-services/",
-        "title": "KOTH Services - King of the Hill",
-        "status": "success",
-        "char_count": 1368
-      }
-    ],
-    "created_at": "2026-10-15T16:48:37.601074+00:00",
-    "updated_at": "2026-10-15T16:48:47.486970+00:00"
-  },
-  {
-    "id": 21,
-    "input_raw": "Joe's Backyard Landscaping – Phoenix AZ",
-    "company_name": "Joe'S Backyard Landscaping",
-    "website": "https://www.yelp.com/biz/joses-landscaping-phoenix-6",
-    "status": "completed",
-    "error_message": null,
-    "company_overview": "Joe'S Backyard Landscaping is a professional arboricultural and tree care service provider delivering certified tree management, trimming, and removal.",
+    "company_overview": "Springhilllandscaping is a professional arboricultural and tree care service provider delivering certified tree management, trimming, and removal.",
     "core_products_services": "Commercial land clearing, municipal tree risk assessment, hazardous tree removal, pruning, and emergency storm clearing.",
     "target_customer": "Municipalities, commercial property managers, utility companies, and residential landowners.",
-    "b2b_decision": "No",
-    "b2b_confidence": 88.0,
-    "b2b_reasoning": "The business branding and service descriptions indicate a dedicated focus on individual residential homeowners and consumer pet care. No substantial commercial contracting or dedicated enterprise accounts were identified.",
+    "b2b_decision": "Yes",
+    "b2b_confidence": 90.0,
+    "b2b_reasoning": "Springhilllandscaping demonstrates clear commercial B2B capacity. Scraped materials verify commercial property services, contractor partnerships, property management accounts, or fleet maintenance.",
     "sales_questions": [
       "Do you currently bid on municipal or utility easement clearing contracts in your service area?",
       "How do you balance high-margin commercial hazard removal contracts with seasonal residential tree maintenance?",
@@ -142,17 +111,72 @@
     ],
     "scraped_pages": [
       {
-        "url": "https://www.yelp.com/biz/joses-landscaping-phoenix-6",
-        "title": "Jose's Landscaping - Phoenix, AZ - Yelp",
-        "status": "HTTP 403",
-        "char_count": 386
+        "url": "https://www.springhilllandscaping.com",
+        "title": "Home - King of the Hill",
+        "status": "success",
+        "char_count": 2674
+      },
+      {
+        "url": "http://springhilllandscaping.com/index.php/services/",
+        "title": "Services - King of the Hill",
+        "status": "success",
+        "char_count": 1254
+      },
+      {
+        "url": "http://springhilllandscaping.com/index.php/king-of-the-hill-services/",
+        "title": "KOTH Services - King of the Hill",
+        "status": "success",
+        "char_count": 1325
       }
     ],
-    "created_at": "2026-10-15T16:48:47.491447+00:00",
-    "updated_at": "2026-10-15T16:48:53.070901+00:00"
+    "created_at": "2026-10-15T17:01:49.120208+00:00",
+    "updated_at": "2026-10-15T17:02:12.113677+00:00",
+    "confidence": "high",
+    "evidence": [
+      "From Home Landscaping to Commercial Properties, we got ya covered.",
+      "King of the Hill is proud to offer carefully designed landscapes crafted to suit our commercial & residential clients’ preferences while prioritizing sustainability."
+    ],
+    "needs_review": false,
+    "data_quality_notes": "",
+    "validation_flags": []
   },
   {
-    "id": 22,
+    "id": 37,
+    "input_raw": "Joe's Backyard Landscaping – Phoenix AZ",
+    "company_name": "Joe'S Backyard Landscaping",
+    "website": "https://www.yelp.com/biz/joses-landscaping-phoenix-6",
+    "status": "completed",
+    "error_message": null,
+    "company_overview": "Joe'S Backyard Landscaping is a professional arboricultural and tree care service provider delivering certified tree management, trimming, and removal.",
+    "core_products_services": "Commercial land clearing, municipal tree risk assessment, hazardous tree removal, pruning, and emergency storm clearing.",
+    "target_customer": "Municipalities, commercial property managers, utility companies, and residential landowners.",
+    "b2b_decision": "No",
+    "b2b_confidence": 88.0,
+    "b2b_reasoning": "Business branding and service offerings indicate dedicated focus on individual residential homeowners or consumer retail. No commercial contracting arm or corporate vendor partnerships identified.",
+    "sales_questions": [
+      "Do you currently bid on municipal or utility easement clearing contracts in your service area?",
+      "How do you balance high-margin commercial hazard removal contracts with seasonal residential tree maintenance?",
+      "What safety certification and equipment tracking workflows do your field crews use on high-risk jobs?"
+    ],
+    "key_signals": [
+      "Certified arborists on staff",
+      "Heavy machinery / crane capacity",
+      "Storm damage emergency response"
+    ],
+    "scraped_pages": [],
+    "created_at": "2026-10-15T17:02:12.117234+00:00",
+    "updated_at": "2026-10-15T17:02:18.201063+00:00",
+    "confidence": "high",
+    "evidence": [],
+    "needs_review": true,
+    "data_quality_notes": "Direct fetch returned HTTP HTTP 403. Using search fallback.",
+    "validation_flags": [
+      "Scraping restricted by site's robots.txt policy",
+      "Direct page content unavailable; used fallback search summary"
+    ]
+  },
+  {
+    "id": 38,
     "input_raw": "https://www.centraltexasbarkery.com",
     "company_name": "Centraltexasbarkery",
     "website": "https://www.centraltexasbarkery.com",
@@ -163,7 +187,7 @@
     "target_customer": "Commercial businesses and residential clients seeking reliable regional service.",
     "b2b_decision": "No",
     "b2b_confidence": 88.0,
-    "b2b_reasoning": "The business branding and service descriptions indicate a dedicated focus on individual residential homeowners and consumer pet care. No substantial commercial contracting or dedicated enterprise accounts were identified.",
+    "b2b_reasoning": "Business branding and service offerings indicate dedicated focus on individual residential homeowners or consumer retail. No commercial contracting arm or corporate vendor partnerships identified.",
     "sales_questions": [
       "What is your current mix between recurring commercial contract accounts and one-off project engagements?",
       "What is the single biggest operational bottleneck restricting your capacity to take on larger contracts this quarter?",
@@ -173,19 +197,19 @@
       "Regional business footprint",
       "Established local service capability"
     ],
-    "scraped_pages": [
-      {
-        "url": "https://www.centraltexasbarkery.com",
-        "title": "Centraltexasbarkery",
-        "status": "error",
-        "char_count": 0
-      }
-    ],
-    "created_at": "2026-10-15T16:48:53.074272+00:00",
-    "updated_at": "2026-10-15T16:48:53.121674+00:00"
+    "scraped_pages": [],
+    "created_at": "2026-10-15T17:02:18.204426+00:00",
+    "updated_at": "2026-10-15T17:02:18.249417+00:00",
+    "confidence": "high",
+    "evidence": [],
+    "needs_review": true,
+    "data_quality_notes": "Limited web text available; human review recommended.",
+    "validation_flags": [
+      "Direct page content unavailable; used fallback search summary"
+    ]
   },
   {
-    "id": 23,
+    "id": 39,
     "input_raw": "Sunrise Plumbing & Drain Services – Tampa FL",
     "company_name": "Sunrise Plumbing & Drain Services",
     "website": "https://sunriseplumbingteam.com/tampa/",
@@ -196,7 +220,7 @@
     "target_customer": "Commercial facility managers, multi-family property operators, and local homeowners.",
     "b2b_decision": "Yes",
     "b2b_confidence": 90.0,
-    "b2b_reasoning": "Sunrise Plumbing & Drain Services demonstrates clear commercial capacity and B2B engagement. Scraped materials highlight commercial property services, contractor partnerships, property management support, or institutional accounts alongside any residential offerings.",
+    "b2b_reasoning": "Sunrise Plumbing & Drain Services demonstrates clear commercial B2B capacity. Scraped materials verify commercial property services, contractor partnerships, property management accounts, or fleet maintenance.",
     "sales_questions": [
       "What percentage of your recurring revenue comes from commercial service level agreements (SLAs) versus ad-hoc residential service calls?",
       "How are you currently managing technician dispatch and real-time inventory tracking across your service fleet?",
@@ -212,59 +236,88 @@
         "url": "https://sunriseplumbingteam.com/tampa/",
         "title": "Plumber in Tampa, FL | Sunrise Plumbing Team",
         "status": "success",
-        "char_count": 11264
+        "char_count": 11104
+      },
+      {
+        "url": "https://sunriseplumbingteam.com/about/",
+        "title": "About Sunrise Plumbing Team | Plumbing in Sunrise, FL",
+        "status": "success",
+        "char_count": 1714
       },
       {
         "url": "https://sunriseplumbingteam.com/residential/",
         "title": "Residential Plumbing in Sunrise, FL | Sunrise Plumbing Team",
         "status": "success",
-        "char_count": 10236
-      },
-      {
-        "url": "https://sunriseplumbingteam.com/sewer-line-services/",
-        "title": "Sewer Line Repair in Sunrise, FL | Sunrise Plumbing Team",
-        "status": "success",
-        "char_count": 6001
+        "char_count": 10200
       }
     ],
-    "created_at": "2026-10-15T16:48:53.125037+00:00",
-    "updated_at": "2026-10-15T16:48:58.751994+00:00"
+    "created_at": "2026-10-15T17:02:18.253368+00:00",
+    "updated_at": "2026-10-15T17:02:25.029124+00:00",
+    "confidence": "high",
+    "evidence": [
+      "Reliable plumbing solutions for Tampa residents and businesses, available around the clock.",
+      "Sunrise Plumbing Team provides a full range of residential and commercial plumbing services to Tampa residents, including:"
+    ],
+    "needs_review": false,
+    "data_quality_notes": "",
+    "validation_flags": []
   },
   {
-    "id": 24,
+    "id": 40,
     "input_raw": "https://www.denverlockandsafe.com",
     "company_name": "Denverlockandsafe",
     "website": "https://www.denverlockandsafe.com",
     "status": "completed",
     "error_message": null,
-    "company_overview": "Denverlockandsafe is a regional service provider offering specialized solutions within the local market.",
-    "core_products_services": "Professional service delivery, maintenance contracts, custom project design, and on-demand customer support.",
-    "target_customer": "Commercial businesses and residential clients seeking reliable regional service.",
-    "b2b_decision": "No",
-    "b2b_confidence": 80.0,
-    "b2b_reasoning": "Primary market positioning is geared towards individual local residential homeowners or consumer retail.",
+    "company_overview": "Denverlockandsafe delivers security, locksmithing, and safe maintenance services for commercial facilities and residential properties.",
+    "core_products_services": "Access control systems, master key suites, commercial safe installation, electronic lock hardware, emergency lockouts.",
+    "target_customer": "Commercial enterprises, retail businesses, property managers, and residential homeowners.",
+    "b2b_decision": "Yes",
+    "b2b_confidence": 90.0,
+    "b2b_reasoning": "Denverlockandsafe demonstrates clear commercial B2B capacity. Scraped materials verify commercial property services, contractor partnerships, property management accounts, or fleet maintenance.",
     "sales_questions": [
-      "What is your current mix between recurring commercial contract accounts and one-off project engagements?",
-      "What is the single biggest operational bottleneck restricting your capacity to take on larger contracts this quarter?",
-      "How do your sales or business development reps currently identify and qualify inbound opportunities?"
+      "How large is your commercial access control and master key system installation pipeline compared to residential lockouts?",
+      "What electronic security brands and hardware ecosystems do you standardize on for commercial enterprise contracts?",
+      "Are you positioned to support multi-site facility managers requiring unified security keying across locations?"
     ],
     "key_signals": [
-      "Regional business footprint",
-      "Established local service capability"
+      "Commercial security hardware",
+      "Safe vault installation",
+      "Mobile locksmith service units"
     ],
     "scraped_pages": [
       {
-        "url": "https://www.denverlockandsafe.com",
-        "title": "Denverlockandsafe",
-        "status": "error",
-        "char_count": 0
+        "url": "https://denverlockandsafe.com/",
+        "title": "Denver Lock And Safe 24/7|Contact Now: 303-357-8311",
+        "status": "success",
+        "char_count": 8569
+      },
+      {
+        "url": "https://denverlockandsafe.com/commercial-locksmith.html",
+        "title": "Commercial Locksmith in Denver|Call Now: 303-357-8311.",
+        "status": "success",
+        "char_count": 1503
+      },
+      {
+        "url": "https://denverlockandsafe.com/residential-locksmith.html",
+        "title": "Residential Locksmith in Denver|Call Now: 303-357-8311",
+        "status": "success",
+        "char_count": 720
       }
     ],
-    "created_at": "2026-10-15T16:48:58.755606+00:00",
-    "updated_at": "2026-10-15T16:49:11.099240+00:00"
+    "created_at": "2026-10-15T17:02:25.032337+00:00",
+    "updated_at": "2026-10-15T17:02:29.922695+00:00",
+    "confidence": "high",
+    "evidence": [
+      "Commercial Lock Change",
+      "Title: Commercial Locksmith in Denver|Call Now: 303-357-8311."
+    ],
+    "needs_review": false,
+    "data_quality_notes": "",
+    "validation_flags": []
   },
   {
-    "id": 25,
+    "id": 41,
     "input_raw": "Green Leaf Lawn Care – Columbus OH",
     "company_name": "Green Leaf Lawn Care",
     "website": "https://www.yellowpages.com/columbus-oh/mip/greenleaf-lawns-532990146",
@@ -275,7 +328,7 @@
     "target_customer": "Commercial businesses and residential clients seeking reliable regional service.",
     "b2b_decision": "No",
     "b2b_confidence": 80.0,
-    "b2b_reasoning": "Primary market positioning is geared towards individual local residential homeowners or consumer retail.",
+    "b2b_reasoning": "Primary market positioning is geared towards individual consumers and residential service calls.",
     "sales_questions": [
       "What is your current mix between recurring commercial contract accounts and one-off project engagements?",
       "What is the single biggest operational bottleneck restricting your capacity to take on larger contracts this quarter?",
@@ -285,19 +338,19 @@
       "Regional business footprint",
       "Established local service capability"
     ],
-    "scraped_pages": [
-      {
-        "url": "https://www.yellowpages.com/columbus-oh/mip/greenleaf-lawns-532990146",
-        "title": "Greenleaf Lawns - Columbus, OH 43230 - The Real Yellow Pages",
-        "status": "HTTP 403",
-        "char_count": 141
-      }
-    ],
-    "created_at": "2026-10-15T16:49:11.102975+00:00",
-    "updated_at": "2026-10-15T16:49:17.939977+00:00"
+    "scraped_pages": [],
+    "created_at": "2026-10-15T17:02:29.927348+00:00",
+    "updated_at": "2026-10-15T17:02:33.672337+00:00",
+    "confidence": "medium",
+    "evidence": [],
+    "needs_review": true,
+    "data_quality_notes": "Direct fetch returned HTTP HTTP 403. Using search fallback.",
+    "validation_flags": [
+      "Direct page content unavailable; used fallback search summary"
+    ]
   },
   {
-    "id": 26,
+    "id": 42,
     "input_raw": "https://www.redtruckbakery.com",
     "company_name": "Redtruckbakery",
     "website": "https://www.redtruckbakery.com",
@@ -308,7 +361,7 @@
     "target_customer": "Commercial businesses and residential clients seeking reliable regional service.",
     "b2b_decision": "Yes",
     "b2b_confidence": 90.0,
-    "b2b_reasoning": "Redtruckbakery demonstrates clear commercial capacity and B2B engagement. Scraped materials highlight commercial property services, contractor partnerships, property management support, or institutional accounts alongside any residential offerings.",
+    "b2b_reasoning": "Redtruckbakery demonstrates clear commercial B2B capacity. Scraped materials verify commercial property services, contractor partnerships, property management accounts, or fleet maintenance.",
     "sales_questions": [
       "What is your current mix between recurring commercial contract accounts and one-off project engagements?",
       "What is the single biggest operational bottleneck restricting your capacity to take on larger contracts this quarter?",
@@ -323,26 +376,31 @@
         "url": "https://www.classiccatering.com/",
         "title": "The Classic Catering People – The Classic Catering People",
         "status": "success",
-        "char_count": 757
-      },
-      {
-        "url": "https://www.classiccatering.com/contact-us/",
-        "title": "Contact Us – The Classic Catering People",
-        "status": "success",
-        "char_count": 888
+        "char_count": 39
       },
       {
         "url": "https://www.classiccatering.com/full-service-events/",
         "title": "Full Service Events – The Classic Catering People",
         "status": "success",
-        "char_count": 1480
+        "char_count": 842
+      },
+      {
+        "url": "https://www.classiccatering.com/full-service-events/menus/",
+        "title": "Menus – The Classic Catering People",
+        "status": "success",
+        "char_count": 569
       }
     ],
-    "created_at": "2026-10-15T16:49:17.943877+00:00",
-    "updated_at": "2026-10-15T16:49:30.704618+00:00"
+    "created_at": "2026-10-15T17:02:33.675564+00:00",
+    "updated_at": "2026-10-15T17:02:53.131935+00:00",
+    "confidence": "high",
+    "evidence": [],
+    "needs_review": false,
+    "data_quality_notes": "",
+    "validation_flags": []
   },
   {
-    "id": 27,
+    "id": 43,
     "input_raw": "Blue Ridge HVAC Services – Roanoke VA",
     "company_name": "Blue Ridge Hvac Services",
     "website": "https://blueridgeheatingandair.com/",
@@ -353,7 +411,7 @@
     "target_customer": "Commercial facility managers, multi-family property operators, and local homeowners.",
     "b2b_decision": "Yes",
     "b2b_confidence": 90.0,
-    "b2b_reasoning": "Blue Ridge Hvac Services demonstrates clear commercial capacity and B2B engagement. Scraped materials highlight commercial property services, contractor partnerships, property management support, or institutional accounts alongside any residential offerings.",
+    "b2b_reasoning": "Blue Ridge Hvac Services demonstrates clear commercial B2B capacity. Scraped materials verify commercial property services, contractor partnerships, property management accounts, or fleet maintenance.",
     "sales_questions": [
       "What percentage of your recurring revenue comes from commercial service level agreements (SLAs) versus ad-hoc residential service calls?",
       "How are you currently managing technician dispatch and real-time inventory tracking across your service fleet?",
@@ -369,37 +427,45 @@
         "url": "https://blueridgeheatingandair.com/",
         "title": "Blue Ridge Heating & Air | AC Repair | Blacksburg, Roanoke, Christiansburg",
         "status": "success",
-        "char_count": 2761
+        "char_count": 2742
+      },
+      {
+        "url": "https://blueridgeheatingandair.com/about-us/",
+        "title": "About Us | AC Repair | Roanoke, Blacksburg, & Christiansburg",
+        "status": "success",
+        "char_count": 1852
       },
       {
         "url": "https://blueridgeheatingandair.com/contact/",
         "title": "Contact | AC Repair | Roanoke, Blacksburg, & Christiansburg",
         "status": "success",
-        "char_count": 247
-      },
-      {
-        "url": "https://blueridgeheatingandair.com/heating-emergency-service/",
-        "title": "Heating Emergency Service | Emergency Service | Roanoke, Blacksburg, & Christiansburg",
-        "status": "success",
-        "char_count": 4396
+        "char_count": 232
       }
     ],
-    "created_at": "2026-10-15T16:49:30.709789+00:00",
-    "updated_at": "2026-10-15T16:49:47.172942+00:00"
+    "created_at": "2026-10-15T17:02:53.136152+00:00",
+    "updated_at": "2026-10-15T17:03:13.960299+00:00",
+    "confidence": "high",
+    "evidence": [
+      "Meta Description: Heating & cooling contractor for Roanoke, Blacksburg, Christiansburg, & New River Valley. Heating & air service: furnace, heat pump, & ac repair & installation.",
+      "We are proud to provide comfort services to homes and businesses throughout Southwest Virginia."
+    ],
+    "needs_review": false,
+    "data_quality_notes": "",
+    "validation_flags": []
   },
   {
-    "id": 28,
+    "id": 44,
     "input_raw": "Acme Roofing & Construction – Dallas TX",
     "company_name": "Acme Roofing & Construction",
     "website": "https://www.acmeconstructiontx.com/about",
     "status": "completed",
     "error_message": null,
-    "company_overview": "Acme Roofing & Construction is a specialized roofing and exterior construction contractor providing professional roof installation, repair, and replacement services.",
+    "company_overview": "Acme Roofing & Construction is a commercial and residential roofing contractor providing professional roof installation, repair, and replacement services.",
     "core_products_services": "Commercial flat roofing (TPO/EPDM), residential shingle replacement, storm damage inspection, preventative roof maintenance.",
     "target_customer": "Commercial property owners, general contractors, facility managers, and residential homeowners.",
     "b2b_decision": "Yes",
     "b2b_confidence": 90.0,
-    "b2b_reasoning": "Acme Roofing & Construction demonstrates clear commercial capacity and B2B engagement. Scraped materials highlight commercial property services, contractor partnerships, property management support, or institutional accounts alongside any residential offerings.",
+    "b2b_reasoning": "Acme Roofing & Construction demonstrates clear commercial B2B capacity. Scraped materials verify commercial property services, contractor partnerships, property management accounts, or fleet maintenance.",
     "sales_questions": [
       "What proportion of your current project pipeline is commercial/institutional roofing versus residential re-roofing?",
       "How are your crews currently handling warranty tracking, inspection reporting, and subcontractor coordination on large-scale jobs?",
@@ -427,14 +493,22 @@
         "url": "https://www.acmeconstructiontx.com/commercial",
         "title": "About — ACME CONSTRUCTION",
         "status": "success",
-        "char_count": 465
+        "char_count": 258
       }
     ],
-    "created_at": "2026-10-15T16:49:47.178814+00:00",
-    "updated_at": "2026-10-15T16:49:57.961265+00:00"
+    "created_at": "2026-10-15T17:03:13.965775+00:00",
+    "updated_at": "2026-10-15T17:03:25.938796+00:00",
+    "confidence": "high",
+    "evidence": [
+      "Home Remodel | Small Projects | Roofing | Exterior Improvements | Pergolas | Outdoor Kitchens | Patio Extensions | Commercial Office Updates | And More!",
+      "We are proud to offer our professional renovation and design services in the commercial area as well! Call us for projects of all sizes."
+    ],
+    "needs_review": false,
+    "data_quality_notes": "",
+    "validation_flags": []
   },
   {
-    "id": 29,
+    "id": 45,
     "input_raw": "https://www.bostonplumbing.com",
     "company_name": "Bostonplumbing",
     "website": "https://www.bostonplumbing.com",
@@ -445,7 +519,7 @@
     "target_customer": "Commercial businesses and residential clients seeking reliable regional service.",
     "b2b_decision": "No",
     "b2b_confidence": 80.0,
-    "b2b_reasoning": "Primary market positioning is geared towards individual local residential homeowners or consumer retail.",
+    "b2b_reasoning": "Primary market positioning is geared towards individual consumers and residential service calls.",
     "sales_questions": [
       "What is your current mix between recurring commercial contract accounts and one-off project engagements?",
       "What is the single biggest operational bottleneck restricting your capacity to take on larger contracts this quarter?",
@@ -455,19 +529,19 @@
       "Regional business footprint",
       "Established local service capability"
     ],
-    "scraped_pages": [
-      {
-        "url": "https://www.bostonplumbing.com",
-        "title": "Bostonplumbing",
-        "status": "error",
-        "char_count": 0
-      }
-    ],
-    "created_at": "2026-10-15T16:49:57.965437+00:00",
-    "updated_at": "2026-10-15T16:50:09.991839+00:00"
+    "scraped_pages": [],
+    "created_at": "2026-10-15T17:03:25.942672+00:00",
+    "updated_at": "2026-10-15T17:03:41.969944+00:00",
+    "confidence": "medium",
+    "evidence": [],
+    "needs_review": true,
+    "data_quality_notes": "Limited web text available; human review recommended.",
+    "validation_flags": [
+      "Direct page content unavailable; used fallback search summary"
+    ]
   },
   {
-    "id": 30,
+    "id": 46,
     "input_raw": "Pacific Northwest Tree Care – Portland OR",
     "company_name": "Pacific Northwest Tree Care",
     "website": "https://www.portlandoregonarborist.com/tree-services-portland-oregon/",
@@ -478,7 +552,7 @@
     "target_customer": "Municipalities, commercial property managers, utility companies, and residential landowners.",
     "b2b_decision": "No",
     "b2b_confidence": 80.0,
-    "b2b_reasoning": "Primary market positioning is geared towards individual local residential homeowners or consumer retail.",
+    "b2b_reasoning": "Primary market positioning is geared towards individual consumers and residential service calls.",
     "sales_questions": [
       "Do you currently bid on municipal or utility easement clearing contracts in your service area?",
       "How do you balance high-margin commercial hazard removal contracts with seasonal residential tree maintenance?",
@@ -494,25 +568,30 @@
         "url": "https://www.portlandoregonarborist.com/cgi-sys/suspendedpage.cgi",
         "title": "Account Suspended",
         "status": "success",
-        "char_count": 120
+        "char_count": 102
       }
     ],
-    "created_at": "2026-10-15T16:50:09.998593+00:00",
-    "updated_at": "2026-10-15T16:50:18.496723+00:00"
+    "created_at": "2026-10-15T17:03:41.973276+00:00",
+    "updated_at": "2026-10-15T17:03:52.345165+00:00",
+    "confidence": "medium",
+    "evidence": [],
+    "needs_review": false,
+    "data_quality_notes": "",
+    "validation_flags": []
   },
   {
-    "id": 31,
+    "id": 47,
     "input_raw": "Maple Street Auto Repair – Madison WI",
     "company_name": "Maple Street Auto Repair",
-    "website": "https://www.maplestreetrods.com/",
+    "website": "https://www.chamberofcommerce.com/united-states/wisconsin/ellsworth/auto-repair-shop/24065757-maple-street-repair",
     "status": "completed",
     "error_message": null,
     "company_overview": "Maple Street Auto Repair is an automotive repair, mechanical service, and collision center offering diagnostic and repair solutions.",
     "core_products_services": "Commercial fleet maintenance, collision repair, mechanical tune-ups, engine diagnostics, preventative servicing.",
     "target_customer": "Local fleet operators, small business vehicle owners, and consumer motorists.",
-    "b2b_decision": "Yes",
-    "b2b_confidence": 78.0,
-    "b2b_reasoning": "Scraped web presence highlights commercial clients, business service tiers, or multi-unit project capacity.",
+    "b2b_decision": "No",
+    "b2b_confidence": 80.0,
+    "b2b_reasoning": "Primary market positioning is geared towards individual consumers and residential service calls.",
     "sales_questions": [
       "Do you currently service fleet accounts for local delivery, contracting, or municipal vehicles?",
       "How do you manage parts procurement and bay turnover to minimize vehicle downtime for commercial clients?",
@@ -523,31 +602,19 @@
       "Diagnostic equipment",
       "Fleet maintenance capability"
     ],
-    "scraped_pages": [
-      {
-        "url": "https://www.maplestreetrods.com/",
-        "title": "Maple Street Rods & Collision LLC",
-        "status": "success",
-        "char_count": 224
-      },
-      {
-        "url": "https://www.maplestreetrods.com/services-4",
-        "title": "Services 4 — Maple Street Rods & Collision LLC",
-        "status": "success",
-        "char_count": 3021
-      },
-      {
-        "url": "https://www.maplestreetrods.com/about-us",
-        "title": "General 1 — Maple Street Rods & Collision LLC",
-        "status": "success",
-        "char_count": 1146
-      }
-    ],
-    "created_at": "2026-10-15T16:50:18.500042+00:00",
-    "updated_at": "2026-10-15T16:50:31.068392+00:00"
+    "scraped_pages": [],
+    "created_at": "2026-10-15T17:03:52.349064+00:00",
+    "updated_at": "2026-10-15T17:03:59.467393+00:00",
+    "confidence": "medium",
+    "evidence": [],
+    "needs_review": true,
+    "data_quality_notes": "Direct fetch returned HTTP HTTP 403. Using search fallback.",
+    "validation_flags": [
+      "Direct page content unavailable; used fallback search summary"
+    ]
   },
   {
-    "id": 32,
+    "id": 48,
     "input_raw": "https://www.piedmontmoving.com",
     "company_name": "Piedmontmoving",
     "website": "https://www.piedmontmoving.com",
@@ -558,7 +625,7 @@
     "target_customer": "Businesses relocating offices, corporate HR relocation programs, and residential movers.",
     "b2b_decision": "Yes",
     "b2b_confidence": 90.0,
-    "b2b_reasoning": "Piedmontmoving demonstrates clear commercial capacity and B2B engagement. Scraped materials highlight commercial property services, contractor partnerships, property management support, or institutional accounts alongside any residential offerings.",
+    "b2b_reasoning": "Piedmontmoving demonstrates clear commercial B2B capacity. Scraped materials verify commercial property services, contractor partnerships, property management accounts, or fleet maintenance.",
     "sales_questions": [
       "How do you currently prospect and secure corporate relocation contracts with regional office parks and corporate headquarters?",
       "What logistics and fleet management software does your dispatch team rely on to minimize downtime between routes?",
@@ -574,22 +641,30 @@
         "url": "https://www.piedmontmoving.com",
         "title": "Piedmont Moving Systems | San Jose Commercial Movers & Commercial Storage",
         "status": "success",
-        "char_count": 2625
+        "char_count": 1831
+      },
+      {
+        "url": "https://www.piedmontmoving.com/about-us",
+        "title": "About Piedmont Moving Systems | Premier San Jose Movers",
+        "status": "success",
+        "char_count": 4260
       },
       {
         "url": "https://www.piedmontmoving.com/storage",
         "title": "Commercial Warehouse Storage in San Jose | Piedmont Moving Systems",
         "status": "success",
-        "char_count": 6856
-      },
-      {
-        "url": "https://www.piedmontmoving.com/logistics/food-service-logistics",
-        "title": "Restaurant Logistics for Equipment & Commercial Storage",
-        "status": "success",
-        "char_count": 6106
+        "char_count": 5701
       }
     ],
-    "created_at": "2026-10-15T16:50:31.072094+00:00",
-    "updated_at": "2026-10-15T16:50:33.145469+00:00"
+    "created_at": "2026-10-15T17:03:59.471903+00:00",
+    "updated_at": "2026-10-15T17:04:01.316881+00:00",
+    "confidence": "high",
+    "evidence": [
+      "Title: Piedmont Moving Systems | San Jose Commercial Movers & Commercial Storage",
+      "Meta Description: Discover Piedmont's 40+ years of expertise in commercial movers, office relocation services, and corporate moving service in San Jose. Contact us today!"
+    ],
+    "needs_review": false,
+    "data_quality_notes": "",
+    "validation_flags": []
   }
 ]

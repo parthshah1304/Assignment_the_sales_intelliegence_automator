@@ -8,10 +8,15 @@ class SalesBrief(BaseModel):
     core_products_services: str = Field(..., description="Main offerings, products, or service categories")
     target_customer: str = Field(..., description="Target audience or client demographic (e.g. residential vs commercial)")
     b2b_decision: str = Field(..., description="B2B Qualification Decision: 'Yes' or 'No'")
+    confidence: str = Field(default="high", description="'high', 'medium', or 'low'")
     b2b_confidence: float = Field(..., description="Confidence score for B2B qualification (0 to 100)")
     b2b_reasoning: str = Field(..., description="Concrete justification for why the company is or isn't qualified as B2B")
+    evidence: List[str] = Field(default_factory=list, description="Verbatim quotes copied directly from scraped website content")
     sales_questions: List[str] = Field(..., description="Exactly 3 specific, discovery questions for a sales rep")
     key_signals: List[str] = Field(default_factory=list, description="Key operational, fleet, scale, or commercial signals")
+    needs_review: bool = Field(default=False, description="Flag indicating human review recommended")
+    data_quality_notes: Optional[str] = Field(default="", description="Notes regarding page quality, JS rendering, or search fallbacks")
+    validation_flags: List[str] = Field(default_factory=list, description="Validation warnings, overrides, or quote audit results")
 
 class LeadCreate(BaseModel):
     input_raw: str = Field(..., min_length=1, description="Lead URL, company name, or incomplete input")
@@ -36,10 +41,15 @@ class LeadResponse(BaseModel):
     core_products_services: Optional[str] = None
     target_customer: Optional[str] = None
     b2b_decision: Optional[str] = None
+    confidence: Optional[str] = None
     b2b_confidence: Optional[float] = None
     b2b_reasoning: Optional[str] = None
+    evidence: Optional[List[str]] = None
     sales_questions: Optional[List[str]] = None
     key_signals: Optional[List[str]] = None
+    needs_review: Optional[bool] = False
+    data_quality_notes: Optional[str] = None
+    validation_flags: Optional[List[str]] = None
     scraped_pages: Optional[List[Dict[str, Any]]] = None
     created_at: str
     updated_at: str

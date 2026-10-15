@@ -24,15 +24,36 @@ def init_db():
         core_products_services TEXT,
         target_customer TEXT,
         b2b_decision TEXT,
+        confidence TEXT DEFAULT 'high',
         b2b_confidence REAL,
         b2b_reasoning TEXT,
+        evidence TEXT,
         sales_questions TEXT,
         key_signals TEXT,
+        needs_review INTEGER DEFAULT 0,
+        data_quality_notes TEXT,
+        validation_flags TEXT,
         scraped_pages TEXT,
         created_at TEXT NOT NULL,
         updated_at TEXT NOT NULL
     );
     """)
+    
+    # Check if new columns exist for existing databases (schema migration)
+    cursor.execute("PRAGMA table_info(leads)")
+    existing_cols = {row["name"] for row in cursor.fetchall()}
+    
+    new_cols = [
+        ("confidence", "TEXT DEFAULT 'high'"),
+        ("evidence", "TEXT"),
+        ("needs_review", "INTEGER DEFAULT 0"),
+        ("data_quality_notes", "TEXT"),
+        ("validation_flags", "TEXT")
+    ]
+    for col_name, col_type in new_cols:
+        if col_name not in existing_cols:
+            cursor.execute(f"ALTER TABLE leads ADD COLUMN {col_name} {col_type};")
+
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS settings (
         key TEXT PRIMARY KEY,
@@ -111,7 +132,12 @@ def update_lead_brief(
     b2b_reasoning: str,
     sales_questions: List[str],
     key_signals: List[str],
-    scraped_pages: List[Dict[str, Any]]
+    scraped_pages: List[Dict[str, Any]],
+    confidence: str = "high",
+    evidence: Optional[List[str]] = None,
+    needs_review: bool = False,
+    data_quality_notes: str = "",
+    validation_flags: Optional[List[str]] = None
 ):
     now = datetime.now(timezone.utc).isoformat()
     conn = get_connection()
@@ -124,10 +150,15 @@ def update_lead_brief(
             core_products_services = ?,
             target_customer = ?,
             b2b_decision = ?,
+            confidence = ?,
             b2b_confidence = ?,
             b2b_reasoning = ?,
+            evidence = ?,
             sales_questions = ?,
             key_signals = ?,
+            needs_review = ?,
+            data_quality_notes = ?,
+            validation_flags = ?,
             scraped_pages = ?,
             status = 'completed',
             error_message = NULL,
@@ -140,10 +171,15 @@ def update_lead_brief(
         core_products_services,
         target_customer,
         b2b_decision,
+        confidence,
         b2b_confidence,
         b2b_reasoning,
+        json.dumps(evidence or []),
         json.dumps(sales_questions),
         json.dumps(key_signals),
+        1 if needs_review else 0,
+        data_quality_notes,
+        json.dumps(validation_flags or []),
         json.dumps(scraped_pages),
         now,
         lead_id
@@ -189,28 +225,14 @@ def set_setting(key: str, value: str):
 
 def _row_to_dict(row: sqlite3.Row) -> Dict[str, Any]:
     d = dict(row)
-    if d.get("sales_questions"):
-        try:
-            d["sales_questions"] = json.loads(d["sales_questions"])
-        except Exception:
-            d["sales_questions"] = []
-    else:
-        d["sales_questions"] = []
-        
-    if d.get("key_signals"):
-        try:
-            d["key_signals"] = json.loads(d["key_signals"])
-        except Exception:
-            d["key_signals"] = []
-    else:
-        d["key_signals"] = []
-
-    if d.get("scraped_pages"):
-        try:
-            d["scraped_pages"] = json.loads(d["scraped_pages"])
-        except Exception:
-            d["scraped_pages"] = []
-    else:
-        d["scraped_pages"] = []
-        
+    for json_col in ("sales_questions", "key_signals", "scraped_pages", "evidence", "validation_flags"):
+        if d.get(json_col):
+            try:
+                d[json_col] = json.loads(d[json_col])
+            except Exception:
+                d[json_col] = []
+        else:
+            d[json_col] = []
+            
+    d["needs_review"] = bool(d.get("needs_review", 0))
     return d

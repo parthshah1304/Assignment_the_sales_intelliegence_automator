@@ -166,6 +166,12 @@ function createLeadCardHtml(lead) {
         : (isFailed ? `<p class="text-xs text-rose-500 font-mono">${escapeHtml(lead.error_message || 'Error occurred during research')}</p>` : `<p class="text-xs text-slate-400 italic">Gathering intelligence from the web...</p>`);
 
     const pagesScrapedCount = lead.scraped_pages ? lead.scraped_pages.length : 0;
+    const confLevel = (lead.confidence || 'high').toUpperCase();
+    const reviewBadge = lead.needs_review ? `
+        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200" title="Flagged for human review">
+            <i data-lucide="alert-circle" class="w-2.5 h-2.5 mr-1"></i> Review
+        </span>
+    ` : '';
 
     return `
         <div class="bg-white rounded-xl border border-slate-200 shadow-xs hover:shadow-md transition p-5 flex flex-col justify-between space-y-4">
@@ -173,7 +179,10 @@ function createLeadCardHtml(lead) {
                 <!-- Top Row: Title & Badge -->
                 <div class="flex items-start justify-between gap-2 mb-2">
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-sm font-bold text-slate-900 truncate" title="${escapeHtml(title)}">${escapeHtml(title)}</h3>
+                        <div class="flex items-center space-x-2">
+                            <h3 class="text-sm font-bold text-slate-900 truncate" title="${escapeHtml(title)}">${escapeHtml(title)}</h3>
+                            ${reviewBadge}
+                        </div>
                         <div class="mt-0.5">${website}</div>
                     </div>
                     <div>${statusBadge}</div>
@@ -192,7 +201,7 @@ function createLeadCardHtml(lead) {
                         <i data-lucide="file-text" class="w-3.5 h-3.5 mr-1 text-slate-400"></i>
                         ${pagesScrapedCount} page${pagesScrapedCount === 1 ? '' : 's'}
                     </span>
-                    ${lead.b2b_confidence ? `<span class="text-slate-400">•</span> <span class="font-semibold text-slate-700">${Math.round(lead.b2b_confidence)}% conf.</span>` : ''}
+                    ${lead.b2b_confidence ? `<span class="text-slate-400">•</span> <span class="font-semibold text-slate-700">${confLevel} · ${Math.round(lead.b2b_confidence)}%</span>` : ''}
                 </div>
 
                 <div class="flex items-center space-x-2">
@@ -238,8 +247,36 @@ function openBriefModal(leadId) {
     document.getElementById('modalOverview').innerText = lead.company_overview || 'No overview available.';
     document.getElementById('modalProducts').innerText = lead.core_products_services || 'No product details extracted.';
     document.getElementById('modalAudience').innerText = lead.target_customer || 'Not specified.';
-    document.getElementById('modalConfidence').innerText = `Confidence: ${Math.round(lead.b2b_confidence || 80)}%`;
+    const confLevel = (lead.confidence || 'high').toUpperCase();
+    document.getElementById('modalConfidence').innerText = `Confidence: ${confLevel} (${Math.round(lead.b2b_confidence || 80)}%)`;
     document.getElementById('modalReasoning').innerText = lead.b2b_reasoning || 'No specific reasoning provided.';
+
+    // Verbatim Evidence Quotes
+    const evList = document.getElementById('modalEvidenceList');
+    const evidence = lead.evidence || [];
+    if (evidence.length > 0) {
+        evList.innerHTML = evidence.map(q => `
+            <blockquote class="pl-3 border-l-2 border-brand-500 text-xs text-slate-700 italic bg-white p-2 rounded shadow-2xs">
+                "${escapeHtml(q)}"
+            </blockquote>
+        `).join('');
+    } else {
+        evList.innerHTML = `<p class="text-xs text-slate-400 italic">No verbatim quotes cited.</p>`;
+    }
+
+    // Review / Data Quality Banner
+    const warnBox = document.getElementById('modalReviewWarning');
+    const warnDetails = document.getElementById('modalReviewDetails');
+    const flags = lead.validation_flags || [];
+    const notes = lead.data_quality_notes || '';
+    if (lead.needs_review || flags.length > 0 || notes) {
+        let items = [...flags];
+        if (notes && !items.includes(notes)) items.push(notes);
+        warnDetails.innerHTML = items.map(f => `<div>• ${escapeHtml(f)}</div>`).join('');
+        warnBox.classList.remove('hidden');
+    } else {
+        warnBox.classList.add('hidden');
+    }
 
     // Questions List
     const qList = document.getElementById('modalQuestions');

@@ -101,6 +101,11 @@ async def process_single_lead_pipeline(lead_id: int, input_raw: str):
 
         brief = await analyze_lead(company_name, website, combined_text)
 
+        crawler_flags = crawl_result.get("validation_flags", [])
+        combined_flags = list(brief.validation_flags) + [f for f in crawler_flags if f not in brief.validation_flags]
+        needs_review = brief.needs_review or bool(crawler_flags) or brief.confidence == "low"
+        notes = brief.data_quality_notes or crawl_result.get("data_quality_notes", "")
+
         # Step 3: Persist structured brief in DB
         update_lead_brief(
             lead_id=lead_id,
@@ -114,7 +119,12 @@ async def process_single_lead_pipeline(lead_id: int, input_raw: str):
             b2b_reasoning=brief.b2b_reasoning,
             sales_questions=brief.sales_questions,
             key_signals=brief.key_signals,
-            scraped_pages=scraped_pages
+            scraped_pages=scraped_pages,
+            confidence=brief.confidence,
+            evidence=brief.evidence,
+            needs_review=needs_review,
+            data_quality_notes=notes,
+            validation_flags=combined_flags
         )
 
         logger.info(f"Successfully completed analysis for Lead #{lead_id} ({company_name}) - B2B: {brief.b2b_decision}")
@@ -246,9 +256,9 @@ def export_leads_csv():
     
     # Header
     writer.writerow([
-        "ID", "Input Lead", "Company Name", "Website", "B2B Qualified?", "Confidence %",
-        "Company Overview", "Core Products / Services", "Target Customer",
-        "B2B Reasoning", "Sales Question 1", "Sales Question 2", "Sales Question 3", "Key Signals"
+        "ID", "Input Lead", "Company Name", "Website", "B2B Qualified?", "Confidence Level", "Confidence %",
+        "Needs Review?", "Company Overview", "Core Products / Services", "Target Customer",
+        "B2B Reasoning", "Evidence Quotes", "Sales Question 1", "Sales Question 2", "Sales Question 3", "Key Signals", "Validation Flags"
     ])
     
     for l in leads:
@@ -257,6 +267,8 @@ def export_leads_csv():
         q2 = sq[1] if len(sq) > 1 else ""
         q3 = sq[2] if len(sq) > 2 else ""
         signals_str = "; ".join(l.get("key_signals") or [])
+        evidence_str = " | ".join(l.get("evidence") or [])
+        flags_str = "; ".join(l.get("validation_flags") or [])
         
         writer.writerow([
             l["id"],
@@ -264,13 +276,17 @@ def export_leads_csv():
             l.get("company_name") or "",
             l.get("website") or "",
             l.get("b2b_decision") or "",
+            l.get("confidence") or "high",
             l.get("b2b_confidence") or "",
+            "Yes" if l.get("needs_review") else "No",
             l.get("company_overview") or "",
             l.get("core_products_services") or "",
             l.get("target_customer") or "",
             l.get("b2b_reasoning") or "",
+            evidence_str,
             q1, q2, q3,
-            signals_str
+            signals_str,
+            flags_str
         ])
         
     output.seek(0)
