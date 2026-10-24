@@ -128,24 +128,38 @@ async def analyze_lead(
 
     # 1. Google Gemini Provider
     if provider == "gemini" and gemini_key:
-        try:
-            from google import genai
-            from google.genai import types
-            
-            client = genai.Client(api_key=gemini_key)
-            response = client.models.generate_content(
-                model=settings.GEMINI_MODEL,
-                contents=user_prompt,
-                config=types.GenerateContentConfig(
-                    system_instruction=SYSTEM_PROMPT,
-                    temperature=0.0,
-                    response_mime_type="application/json"
-                ),
-            )
-            if response.text:
-                return parse_and_validate_brief(response.text, company_name, website, dossier_text)
-        except Exception as e:
-            logger.error(f"Gemini API call failed: {e}. Falling back to mock engine.")
+        # Dynamically try the recommended latest models first, then standard stable versions
+        candidate_models = [
+            settings.GEMINI_MODEL,
+            "gemini-3.8-flash",
+            "gemini-2.0-flash",
+            "gemini-1.5-flash",
+            "gemini-1.5-pro"
+        ]
+        # Preserve order while deduplicating
+        seen = set()
+        ordered_candidates = [m for m in candidate_models if not (m in seen or seen.add(m))]
+
+        for model_name in ordered_candidates:
+            try:
+                from google import genai
+                from google.genai import types
+                
+                client = genai.Client(api_key=gemini_key)
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=user_prompt,
+                    config=types.GenerateContentConfig(
+                        system_instruction=SYSTEM_PROMPT,
+                        temperature=0.0,
+                        response_mime_type="application/json"
+                    ),
+                )
+                if response.text:
+                    logger.info(f"Successfully generated brief using Gemini model: {model_name}")
+                    return parse_and_validate_brief(response.text, company_name, website, dossier_text)
+            except Exception as e:
+                logger.warning(f"Gemini API model {model_name} failed: {e}. Trying next fallback...")
 
     # 2. OpenAI Provider
     elif provider == "openai" and openai_key:
